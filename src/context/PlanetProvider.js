@@ -20,6 +20,29 @@ function PlanetProvider(props) {
     }
   };
 
+  const filterByNumericValues = (state) => {
+    // console.log(state);
+    console.log(planets);
+    const { columnFilter, comparisson, valueFilter } = state;
+
+    if (comparisson === 'maior que') {
+      const planetsFiltered = planets.filter((item) => (
+        Number(item[columnFilter]) > Number(valueFilter)
+      ));
+      return setPlanet(planetsFiltered);
+    }
+    if (comparisson === 'menor que') {
+      const planetsFiltered = planets.filter((item) => (
+        Number(item[columnFilter]) < Number(valueFilter)
+      ));
+      return setPlanet(planetsFiltered);
+    }
+    const planetsFiltered = planets.filter((item) => (
+      Number(item[columnFilter]) === Number(valueFilter)
+    ));
+    return setPlanet(planetsFiltered);
+  };
+
   // didMount
   useEffect(() => {
     if (data) {
@@ -30,6 +53,7 @@ function PlanetProvider(props) {
   const context = {
     planets,
     handleFilterByName,
+    filterByNumericValues,
   };
 
   return (
