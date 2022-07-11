@@ -26,6 +26,12 @@ function NumericFilter() {
   };
   const columns = ['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+  const [filters, setFilters] = useState(columns);
+
+  const handleFilters = () => {
+    filterByNumericValues(valueFilter);
+    setFilters(filters.filter((item) => item !== valueFilter.columnFilter));
+  };
 
   return (
     <form>
@@ -35,7 +41,7 @@ function NumericFilter() {
         data-testid="column-filter"
         id="column-filter"
       >
-        {columns.map((item, index) => (
+        {filters.map((item, index) => (
           <option key={ index } value={ item }>{item}</option>
         ))}
       </select>
@@ -59,7 +65,7 @@ function NumericFilter() {
       />
 
       <button
-        onClick={ () => filterByNumericValues(valueFilter) }
+        onClick={ handleFilters }
         type="button"
         data-testid="button-filter"
       >
