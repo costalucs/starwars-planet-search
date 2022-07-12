@@ -8,6 +8,7 @@ function PlanetProvider(props) {
   const { children } = props;
   const [data] = usePlanetsList();
   const [planets, setPlanet] = useState();
+  const [filters, setFilters] = useState([]);
 
   // filtrando pelo nome
   const handleFilterByName = ({ target: { value } }) => {
@@ -18,6 +19,14 @@ function PlanetProvider(props) {
     } else {
       setPlanet(data);
     }
+  };
+
+  const resetPlanets = () => {
+    setPlanet(data);
+  };
+
+  const handleFilters = (filter) => {
+    setFilters([...filters, filter]);
   };
 
   const filterByNumericValues = (state) => {
@@ -52,8 +61,12 @@ function PlanetProvider(props) {
 
   const context = {
     planets,
+    filters,
     handleFilterByName,
     filterByNumericValues,
+    handleFilters,
+    resetPlanets,
+
   };
 
   return (
