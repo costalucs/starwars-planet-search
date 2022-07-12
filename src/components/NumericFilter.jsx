@@ -6,10 +6,14 @@ function NumericFilter() {
   //   number: 0,
   // };
 
-  const { filterByNumericValues,
-    handleFilters, filters, resetPlanets } = useContext(planetContext);
+  const { handleFilter,
+    filterByNumericValues,
+    setFilterByNumericValues, setPlanet, data } = useContext(planetContext);
+  // const { planets } = usePlanetsList();
 
-  // const filterByNumericValues = (state) => {
+  // const [filters, setFilters] = useState([]);
+
+  // const handleFilter = (state) => {
   //   console.log(state);
   // };
   const columns = ['population',
@@ -28,28 +32,39 @@ function NumericFilter() {
     });
   };
 
-  const [columnsFilters, setFilters] = useState(columns);
+  const [columnsFilters, setColumnFilters] = useState(columns);
 
   const deleteFilter = (value) => {
-    const column = document.getElementsById('filter');
-    console.log(column);
-    setFilters([...columnsFilters, value]); // coluna de opções
-    filters.forEach((item, i) => {
-      if (item.columnFilter === value) filters.splice(i, 1); // deleta item
-    });
-    if (column.length === 0) return resetPlanets;
+    const newFilters = filterByNumericValues
+      .filter((item) => item.columnFilter !== value);
+    setFilterByNumericValues(newFilters);
+    setColumnFilters([...columnsFilters, value]);
+    if (newFilters.length === 0) {
+      return setPlanet(data);
+    }
+    // return {
+    //   setPlanet(data)
+    //   filterByNumericValues.forEach((item) => handleFilter(item))
+    setPlanet(data);
+    return newFilters.forEach((item) => handleFilter(item));
+
+    // }
   };
 
-  const handleSetFilters = () => {
-    filterByNumericValues(valueFilter);
-    handleFilters(valueFilter);
-    setFilters(columnsFilters.filter((item) => item !== valueFilter.columnFilter));
+  const handleSetFilters = (filter) => {
+    // console.log(data);
+    handleFilter(filter);
+    setFilterByNumericValues([...filterByNumericValues, filter]);
+    // handleFilters(valueFilter);
+    setColumnFilters(columnsFilters.filter((item) => item !== filter.columnFilter));
+    setValueFilter({ ...valueFilter, columnFilter: columns[0] });
   };
 
   return (
     <form>
+      {/* {console.log(data)} */}
       <div>
-        {filters.map((item, index) => (
+        {filterByNumericValues && filterByNumericValues.map((item, index) => (
           <div data-testid="filter" id="filter" key={ index }>
             <span>
               {item.columnFilter}
@@ -102,11 +117,18 @@ function NumericFilter() {
       />
 
       <button
-        onClick={ handleSetFilters }
+        onClick={ () => handleSetFilters(valueFilter) }
         type="button"
         data-testid="button-filter"
       >
         Filtrar
+      </button>
+      <button
+        onClick={ () => setPlanet(data) }
+        data-testid="button-remove-filters"
+        type="button"
+      >
+        Revomer Filtros
       </button>
 
     </form>

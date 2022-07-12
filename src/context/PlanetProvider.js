@@ -7,8 +7,8 @@ export const planetContext = createContext();
 function PlanetProvider(props) {
   const { children } = props;
   const [data] = usePlanetsList();
-  const [planets, setPlanet] = useState();
-  const [filters, setFilters] = useState([]);
+  const [planets, setPlanet] = useState([]);
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   // filtrando pelo nome
   const handleFilterByName = ({ target: { value } }) => {
@@ -25,15 +25,10 @@ function PlanetProvider(props) {
     setPlanet(data);
   };
 
-  const handleFilters = (filter) => {
-    setFilters([...filters, filter]);
-  };
-
-  const filterByNumericValues = (state) => {
+  const handleFilter = (state) => {
     // console.log(state);
-    console.log(planets);
+    // console.log(planets);
     const { columnFilter, comparisson, valueFilter } = state;
-
     if (comparisson === 'maior que') {
       const planetsFiltered = planets.filter((item) => (
         Number(item[columnFilter]) > Number(valueFilter)
@@ -61,11 +56,13 @@ function PlanetProvider(props) {
 
   const context = {
     planets,
-    filters,
+    data,
     handleFilterByName,
-    filterByNumericValues,
-    handleFilters,
+    handleFilter,
     resetPlanets,
+    setPlanet,
+    filterByNumericValues,
+    setFilterByNumericValues,
 
   };
 
