@@ -2,10 +2,6 @@ import React, { useState, useContext } from 'react';
 import { planetContext } from '../context/PlanetProvider';
 
 function NumericFilter() {
-  // const inicialValue = {
-  //   number: 0,
-  // };
-
   const { handleFilter,
     filterByNumericValues,
     setFilterByNumericValues, setPlanet, data } = useContext(planetContext);
@@ -34,6 +30,13 @@ function NumericFilter() {
 
   const [columnsFilters, setColumnFilters] = useState(columns);
 
+  const handleSetFilters = (filter) => {
+    handleFilter(filter);
+    setFilterByNumericValues([...filterByNumericValues, filter]);
+    setColumnFilters(columnsFilters.filter((item) => item !== filter.columnFilter));
+    setValueFilter({ ...valueFilter, columnFilter: columns[0] });
+  };
+
   const deleteFilter = (value) => {
     const newFilters = filterByNumericValues
       .filter((item) => item.columnFilter !== value);
@@ -42,41 +45,15 @@ function NumericFilter() {
     if (newFilters.length === 0) {
       return setPlanet(data);
     }
-    // return {
-    //   setPlanet(data)
-    //   filterByNumericValues.forEach((item) => handleFilter(item))
-    setPlanet(data);
-    return newFilters.forEach((item) => handleFilter(item));
-
-    // }
-  };
-
-  const handleSetFilters = (filter) => {
-    // console.log(data);
-    handleFilter(filter);
-    setFilterByNumericValues([...filterByNumericValues, filter]);
-    // handleFilters(valueFilter);
-    setColumnFilters(columnsFilters.filter((item) => item !== filter.columnFilter));
-    setValueFilter({ ...valueFilter, columnFilter: columns[0] });
   };
 
   return (
     <form>
-      {/* {console.log(data)} */}
       <div>
-        {filterByNumericValues && filterByNumericValues.map((item, index) => (
+        {filterByNumericValues.map((item, index) => (
           <div data-testid="filter" id="filter" key={ index }>
             <span>
-              {item.columnFilter}
-              {' '}
-            </span>
-            <span>
-              {item.comparisson}
-              {' '}
-            </span>
-            <span>
-              {item.valueFilter}
-              {' '}
+              {`${item.columnFilter} | ${item.comparisson} | ${item.valueFilter} `}
             </span>
             <button
               onClick={ () => deleteFilter(item.columnFilter) }

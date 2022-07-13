@@ -7,8 +7,13 @@ export const planetContext = createContext();
 function PlanetProvider(props) {
   const { children } = props;
   const [data] = usePlanetsList();
-  const [planets, setPlanet] = useState([]);
+  const [planets, setPlanet] = useState();
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  // const [isFiltered, setIsFiltered] = useState(false);
+  const planetasFiltrados = data;
+  if (filterByNumericValues.length > 0) {
+    // planetasFiltrados =
+  }
 
   // filtrando pelo nome
   const handleFilterByName = ({ target: { value } }) => {
@@ -26,8 +31,6 @@ function PlanetProvider(props) {
   };
 
   const handleFilter = (state) => {
-    // console.log(state);
-    // console.log(planets);
     const { columnFilter, comparisson, valueFilter } = state;
     if (comparisson === 'maior que') {
       const planetsFiltered = planets.filter((item) => (
@@ -47,7 +50,6 @@ function PlanetProvider(props) {
     return setPlanet(planetsFiltered);
   };
 
-  // didMount
   useEffect(() => {
     if (data) {
       setPlanet(data);
@@ -63,6 +65,7 @@ function PlanetProvider(props) {
     setPlanet,
     filterByNumericValues,
     setFilterByNumericValues,
+    planetasFiltrados,
 
   };
 
