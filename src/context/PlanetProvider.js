@@ -9,13 +9,8 @@ function PlanetProvider(props) {
   const [data] = usePlanetsList();
   const [planets, setPlanet] = useState();
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
-  // const [isFiltered, setIsFiltered] = useState(false);
   const planetasFiltrados = data;
-  if (filterByNumericValues.length > 0) {
-    // planetasFiltrados =
-  }
 
-  // filtrando pelo nome
   const handleFilterByName = ({ target: { value } }) => {
     if (value !== '') {
       const planetsFiltered = data.filter((item) => item.name
@@ -30,25 +25,26 @@ function PlanetProvider(props) {
     setPlanet(data);
   };
 
-  const handleFilter = (state) => {
-    const { columnFilter, comparisson, valueFilter } = state;
-    if (comparisson === 'maior que') {
-      const planetsFiltered = planets.filter((item) => (
-        Number(item[columnFilter]) > Number(valueFilter)
-      ));
-      return setPlanet(planetsFiltered);
+  const handleFilter = (filters, datas) => {
+    if (filters.length !== 0) {
+      filters.forEach((filter) => {
+        const planetsFiltered = datas.filter((planet) => {
+          if (filter.comparisson === 'maior que') {
+            return Number(planet[filter.columnFilter]) > Number(filter.valueFilter);
+          }
+          if (filter.comparisson === 'menor que') {
+            return Number(planet[filter.columnFilter]) < Number(filter.valueFilter);
+          }
+          return Number(planet[filter.columnFilter]) === Number(filter.valueFilter);
+        });
+        setPlanet(planetsFiltered);
+      });
     }
-    if (comparisson === 'menor que') {
-      const planetsFiltered = planets.filter((item) => (
-        Number(item[columnFilter]) < Number(valueFilter)
-      ));
-      return setPlanet(planetsFiltered);
-    }
-    const planetsFiltered = planets.filter((item) => (
-      Number(item[columnFilter]) === Number(valueFilter)
-    ));
-    return setPlanet(planetsFiltered);
   };
+
+  useEffect(() => {
+    handleFilter(filterByNumericValues, planetasFiltrados);
+  }, [filterByNumericValues, planetasFiltrados]);
 
   useEffect(() => {
     if (data) {
@@ -66,7 +62,6 @@ function PlanetProvider(props) {
     filterByNumericValues,
     setFilterByNumericValues,
     planetasFiltrados,
-
   };
 
   return (

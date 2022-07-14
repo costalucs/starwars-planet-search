@@ -1,4 +1,4 @@
-function handleFilter(filters, state, data) {
+function handleFilterComparison(filters, state, data) {
   const { columnFilter, comparisson, valueFilter } = state;
   const planetasFiltrados = [...data];
   if (filters.length !== 0) {
@@ -24,4 +24,4 @@ function handleFilter(filters, state, data) {
   return planetasFiltrados;
 }
 
-export default handleFilter;
+export default handleFilterComparison;
