@@ -26,20 +26,26 @@ function PlanetProvider(props) {
   };
 
   const handleFilter = (filters, datas) => {
+    let copyData = datas;
     if (filters.length !== 0) {
       filters.forEach((filter) => {
-        const planetsFiltered = datas.filter((planet) => {
-          if (filter.comparisson === 'maior que') {
-            return Number(planet[filter.columnFilter]) > Number(filter.valueFilter);
-          }
-          if (filter.comparisson === 'menor que') {
-            return Number(planet[filter.columnFilter]) < Number(filter.valueFilter);
-          }
-          return Number(planet[filter.columnFilter]) === Number(filter.valueFilter);
-        });
-        setPlanet(planetsFiltered);
+        const columValue = Number(filter.valueFilter);
+        console.log(columValue);
+        if (filter.comparisson === 'maior que') {
+          copyData = copyData.filter((item) => Number(item[filter
+            .columnFilter]) > columValue);
+        }
+        if (filter.comparisson === 'menor que') {
+          copyData = copyData.filter((item) => Number(item[filter
+            .columnFilter]) < columValue);
+        }
+        if (filter.comparisson === 'igual a') {
+          copyData = copyData.filter((item) => Number(item[filter
+            .columnFilter]) === columValue);
+        }
       });
     }
+    setPlanet(copyData);
   };
 
   useEffect(() => {
