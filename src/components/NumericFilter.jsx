@@ -31,8 +31,8 @@ function NumericFilter() {
   const [columnsFilters, setColumnFilters] = useState(columns);
 
   const handleSetFilters = (filter) => {
-    handleFilter(filter);
     setFilterByNumericValues([...filterByNumericValues, filter]);
+    // handleFilter(planetData);/*  */
     setColumnFilters(columnsFilters.filter((item) => item !== filter.columnFilter));
     setValueFilter({ ...valueFilter, columnFilter: columns[0] });
   };
@@ -45,6 +45,7 @@ function NumericFilter() {
     if (newFilters.length === 0) {
       return setPlanet(data);
     }
+    handleFilter(newFilters, data);
   };
 
   return (
