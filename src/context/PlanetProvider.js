@@ -15,13 +15,8 @@ function PlanetProvider(props) {
     if (value !== '') {
       const planetsFiltered = data.filter((item) => item.name
         .toLowerCase().includes(value));
-      setPlanet(planetsFiltered);
-    } else {
-      setPlanet(data);
+      return setPlanet(planetsFiltered);
     }
-  };
-
-  const resetPlanets = () => {
     setPlanet(data);
   };
 
@@ -63,7 +58,6 @@ function PlanetProvider(props) {
     data,
     handleFilterByName,
     handleFilter,
-    resetPlanets,
     setPlanet,
     filterByNumericValues,
     setFilterByNumericValues,

@@ -1,34 +1,21 @@
 import React from 'react';
 import {  cleanup, render, screen } from '@testing-library/react';
 import App from '../App';
-// import data from './data/data';
 import userEvent from '@testing-library/user-event';
-
-// const mock = () => {
-//   jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({
-//     status: 200,
-//     ok: true,
-//     json: () => Promise.resolve(data)
-//   }))
-// }
 
 describe('Testando TableTitles', ()=> {
   beforeEach(cleanup)
-
-  // afterAll(()=> {
-  //   jest.clearAllMocks();
-  // })
-
   test('Testando os componentes da tabela', async () => {
     render(<App/>)
     const tabela = await screen.findAllByRole('columnheader')
+    const tableResult = await screen.findAllByRole('row')
     expect(tabela).toHaveLength(13)
     const inputName = screen.getByTestId('name-filter')
     userEvent.type(inputName, 'tatoo')
     const planet = await screen.getByRole('cell', {  name: /tatooine/i})
     expect(planet).toBeInTheDocument()
     userEvent.type(inputName, '')
-    expect(tabela).toHaveLength(13)
+    expect(tableResult).toHaveLength(11)
 
     const columnFilter = screen.getByTestId('column-filter')
     const comparisonFilter = screen.getByTestId('comparison-filter')
@@ -40,22 +27,31 @@ describe('Testando TableTitles', ()=> {
     userEvent.type(valueFilter, '23')
     userEvent.click(buttonFitler)
 
-    const tableResult = await screen.findAllByRole('row')
+    userEvent.type(inputName, '')
+    expect(tabela).toHaveLength(13)
 
-    expect(tableResult).toHaveLength(4)
+    const filterInfo = screen.getByTestId('filter')
+    const filterRemoveButton = screen.getByRole('button', {  name: /x/i})
+    const removeAllFilter = screen.getByRole('button', {  name: /revomer filtros/i})
+    expect(filterInfo).toBeInTheDocument()
+    expect(removeAllFilter).toBeInTheDocument()
+    expect(filterRemoveButton).toBeInTheDocument()
+
+    userEvent.click(filterRemoveButton)
+    expect(filterInfo).not.toBeInTheDocument()
+
+    userEvent.selectOptions(columnFilter, 'rotation_period')
+    userEvent.selectOptions(comparisonFilter, 'maior que')
+    userEvent.type(valueFilter, '25')
+    userEvent.click(buttonFitler)
+    userEvent.click(removeAllFilter)
+    expect(filterInfo).not.toBeInTheDocument()
+
+    userEvent.type(valueFilter, '')
+    userEvent.selectOptions(columnFilter, 'population')
+    userEvent.selectOptions(comparisonFilter, 'menor que')
+    userEvent.type(valueFilter, '25')
+    userEvent.click(buttonFitler)
 
   })
-
-  // it('Testando input', ()=> {
-  //  render(<App/>)
-
-  //   // expect(inputName).toBeInTheDocument()
-
-  //   userEvent.type(inputName, 'tatoo')
-
-  //   // const planet = await screen.getByRole('cell', {  name: /tatooine/i})
-  //   // expect(planet).toBeInTheDocument()
-
-
-  // })
 })

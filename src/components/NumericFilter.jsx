@@ -5,13 +5,6 @@ function NumericFilter() {
   const { handleFilter,
     filterByNumericValues,
     setFilterByNumericValues, setPlanet, data } = useContext(planetContext);
-  // const { planets } = usePlanetsList();
-
-  // const [filters, setFilters] = useState([]);
-
-  // const handleFilter = (state) => {
-  //   console.log(state);
-  // };
   const columns = ['population',
     'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
@@ -32,7 +25,6 @@ function NumericFilter() {
 
   const handleSetFilters = (filter) => {
     setFilterByNumericValues([...filterByNumericValues, filter]);
-    // handleFilter(planetData);/*  */
     setColumnFilters(columnsFilters.filter((item) => item !== filter.columnFilter));
     setValueFilter({ ...valueFilter, columnFilter: columns[0] });
   };
