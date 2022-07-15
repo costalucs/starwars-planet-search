@@ -1,4 +1,4 @@
-export default {
+const data = {
   count: 60,
   next: 'https://swapi-trybe.herokuapp.com/api/planets/?page=2',
   previous: null,
@@ -237,3 +237,5 @@ export default {
     },
   ],
 };
+
+export default data
