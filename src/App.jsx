@@ -5,6 +5,7 @@ import PlanetProvider from './context/PlanetProvider';
 import Header from './components/Header';
 import InputText from './components/InputText';
 import NumericFilter from './components/NumericFilter';
+import FilterSort from './components/FilterSort';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <InputText />
         </div>
         <NumericFilter />
+        <FilterSort />
         <TableTitles />
       </PlanetProvider>
     </main>

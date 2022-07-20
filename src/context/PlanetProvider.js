@@ -9,6 +9,12 @@ function PlanetProvider(props) {
   const [data] = usePlanetsList();
   const [planets, setPlanet] = useState();
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [sort, setSort] = useState({
+    order: {
+      column: 'population',
+      sort: 'ASC',
+    },
+  });
   const planetasFiltrados = data;
 
   const handleFilterByName = ({ target: { value } }) => {
@@ -20,12 +26,25 @@ function PlanetProvider(props) {
     setPlanet(data);
   };
 
+  const handleSortFilter = (colum, sorting) => {
+    setSort({
+      order: {
+        colum,
+        sort: sorting,
+      },
+    });
+    const newplanets = planets.filter((item) => item[colum] !== 'unknown');
+    if (sorting === 'ASC') {
+      return setPlanet(newplanets.sort((a, b) => Number(a[colum]) - Number(b[colum])));
+    }
+    setPlanet(newplanets.sort((a, b) => Number(b[colum]) - Number(a[colum])));
+  };
+
   const handleFilter = (filters, datas) => {
     let copyData = datas;
     if (filters.length !== 0) {
       filters.forEach((filter) => {
         const columValue = Number(filter.valueFilter);
-        console.log(columValue);
         if (filter.comparisson === 'maior que') {
           copyData = copyData.filter((item) => Number(item[filter
             .columnFilter]) > columValue);
@@ -49,7 +68,13 @@ function PlanetProvider(props) {
 
   useEffect(() => {
     if (data) {
-      setPlanet(data);
+      const newplanets = data?.sort((x, y) => {
+        const a = x.name.toUpperCase();
+        const b = y.name.toUpperCase();
+        return a == b ? 0 : a > b ? 1 : -1;
+      });
+      // console.log(newplanets);
+      setPlanet(newplanets);
     }
   }, [data]);
 
@@ -61,6 +86,7 @@ function PlanetProvider(props) {
     setPlanet,
     filterByNumericValues,
     setFilterByNumericValues,
+    handleSortFilter,
     planetasFiltrados,
   };
 
