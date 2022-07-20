@@ -9,7 +9,7 @@ function PlanetProvider(props) {
   const [data] = usePlanetsList();
   const [planets, setPlanet] = useState();
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
-  const [sort, setSort] = useState({
+  const [, setSort] = useState({
     order: {
       column: 'population',
       sort: 'ASC',
@@ -71,9 +71,10 @@ function PlanetProvider(props) {
       const newplanets = data?.sort((x, y) => {
         const a = x.name.toUpperCase();
         const b = y.name.toUpperCase();
-        return a == b ? 0 : a > b ? 1 : -1;
+        const num = -1;
+        if (a === b) return 0;
+        return a > b ? 1 : num;
       });
-      // console.log(newplanets);
       setPlanet(newplanets);
     }
   }, [data]);
