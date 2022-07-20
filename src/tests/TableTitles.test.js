@@ -26,9 +26,11 @@ describe('Testando TableTitles', ()=> {
     userEvent.selectOptions(comparisonFilter, 'igual a')
     userEvent.type(valueFilter, '23')
     userEvent.click(buttonFitler)
+    expect(screen.getAllByTestId('planet-name')).toHaveLength(3)
 
     userEvent.type(inputName, '')
     expect(tabela).toHaveLength(13)
+
 
     const filterInfo = screen.getByTestId('filter')
     const filterRemoveButton = screen.getByRole('button', {  name: /x/i})
@@ -38,6 +40,7 @@ describe('Testando TableTitles', ()=> {
     expect(filterRemoveButton).toBeInTheDocument()
 
     userEvent.click(filterRemoveButton)
+    expect(screen.getAllByTestId('planet-name')).toHaveLength(10)
     expect(filterInfo).not.toBeInTheDocument()
 
     userEvent.selectOptions(columnFilter, 'rotation_period')
